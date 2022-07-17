@@ -83,9 +83,9 @@ class Settings{
 
     game_state.hitpoints_max = Settings.hitpoints_max;
 
-    logic.word_delay = 8000 / Settings.spawn_rate;
+    logic.word_delay = 6000 / Settings.spawn_rate;
     logic.current_delay = 500; // give players ½ a second before the first word
-    logic.escalate_time = 30000; // this could possibly be a setting
+    logic.escalate_time = 10000; // this could possibly be a setting
     logic.escalate_delay = logic.escalate_time;
   }
 
