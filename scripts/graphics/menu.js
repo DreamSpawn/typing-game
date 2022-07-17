@@ -94,7 +94,7 @@ class Graphics_Menu {
     context.translate(0, font_size_small + padding);
     context.fillText("Press spacebar to activate", 0, 0);
     context.translate(0, font_size_small + padding);
-    context.fillText("Press F10 to pause game at any point", 0, 0);
+    context.fillText("Press F10 or Escape to pause game at any point", 0, 0);
 
     context.font = font_before;
     context.textAlign = allign_before;
