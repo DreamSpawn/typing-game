@@ -22,5 +22,9 @@ class GameState {
     this.lost = false;
     this.single_letter_mode = false;
     this.time_played = 0;
+    this.screen_clears = 0;
+    this.current_delay = 500; // give players ½ a second before the first word
+    this.word_delay = Settings.word_delay;
+    this.escalate_delay = Settings.escalate_time;
   }
 }

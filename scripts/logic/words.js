@@ -72,7 +72,6 @@ class Word {
 		this.score *= this.time_allive < 10000 ? 2 - this.time_allive/10000 : 1;
 		// rounding down
 		this.score = Math.floor(this.score);
-		return this.score;
 	}
 	//-----------------------------------------------------------------------------
 	// Creating a random word from the previously loaded list

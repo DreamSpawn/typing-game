@@ -13,24 +13,25 @@ class Logic {
 	
 		if(!game_state.running) return;
 		
-		this.current_delay -= elapsed;
-		if (this.current_delay <= 0) {
-			this.current_delay += this.word_delay;
-			this.spawn_word();
+		game_state.current_delay -= elapsed;
+		if (game_state.current_delay <= 0) {
+			game_state.current_delay += game_state.word_delay;
+			Logic.spawn_word();
 		}
 		for (var i = 0; i < game_state.words.length; i++) {
 			if (game_state.words[i].update(elapsed)) {
-				this.crash_word(i);
+				let word = game_state.words.splice(i, 1)[0];
+				Logic.crash_word(word);
 				i--;
 			}
 		}
 
 		if(!Settings.escalate) return;
 		
-		this.escalate_delay -= elapsed;
-		if(this.escalate_delay < 0){
-			this.escalate_delay = this.escalate_time;
-			this.word_delay *= 0.95;
+		game_state.escalate_delay -= elapsed;
+		if(game_state.escalate_delay < 0){
+			game_state.escalate_delay = Settings.escalate_time;
+			game_state.word_delay *= 0.95;
 		}
 	}
 	
@@ -57,23 +58,18 @@ class Logic {
 		game_state.input = "";
 	
 		if (hit) {
-			this.score_word(index);
+			let word = game_state.words.splice(index, 1)[0];
+			Logic.score_word(word);
 		} else {
 			game_state.score -= this.penalty;
 			game_state.typos++
 		}
 
-		if (game_state.words.length === 0){
-			this.spawn_word();
-			this.current_delay = 0;
-			// TODO bonus score for clearing screen
-			// TODO increase difficulty after several clears
-		}
 	
 		return hit;
 	}
 	
-	spawn_word() {
+	static spawn_word() {
 		var new_word;
 		if (Settings.random_speed){
 			new_word = Word.fromList(Math.random() * 0.01 + 0.01);
@@ -84,8 +80,7 @@ class Logic {
 		graphics.spawn_word();
 	}
 	
-	crash_word(index) {
-		var word = game_state.words.splice(index, 1)[0];
+	static crash_word(word) {
 		game_state.crashed_words.unshift(word);
 		if (game_state.hitpoints_max !== 10) game_state.hitpoints_current--;
 		sound_system.crash();
@@ -100,10 +95,18 @@ class Logic {
 		graphics.ui_update();
 	}
 	
-	score_word(index) {
-		var word = game_state.words.splice(index, 1)[0];
+	static score_word(word) {
 		game_state.scored_words.unshift(word);
-		game_state.score += word.calc_score();
+		word.calc_score();
+		if (game_state.words.length === 0){
+			// Spawn 2 new words and reset delay
+			Logic.spawn_word();
+			game_state.current_delay = 0;
+
+			word.score *= 2; // Bonus score for clearing screen
+			game_state.screen_clears++;
+		}
+		game_state.score += word.score;
 		game_state.scored++;
 	}
 }
