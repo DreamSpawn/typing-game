@@ -37,6 +37,9 @@ $(document).ready(function(){
 function frame_update (){
 	logic.frame_update();
 	graphics.draw();
+	if (Settings.debug) {
+		Debug.draw();
+	}
 }
 //----------------------------------------------------------------------------------
 // Handling keyboard input
@@ -56,7 +59,6 @@ function input(event) {
 		if (game_state.running){
 			if (game_state.input === "") return;
 		  if (logic.shoot()) {
-				graphics.shoot();
 				sound_system.shoot();
 			} else {
 				sound_system.dud();
@@ -78,7 +80,6 @@ function input(event) {
 		logic.input(k);
 		if (game_state.single_letter_mode){
 		  if (logic.shoot()) {
-				graphics.shoot();
 				sound_system.shoot();
 			} else {
 				sound_system.dud();

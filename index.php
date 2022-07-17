@@ -44,11 +44,14 @@
   <?=addScript("scripts/logic/gamestate.js")?>
   
   <?=addScript("scripts/sound.js")?>
+
+  <?=addScript("scripts/graphics/debug.js")?>
 </head>
 
 <body>
   <canvas id ="background"></canvas>
   <canvas id ="main_canvas"></canvas>
   <canvas id ="ui_canvas"></canvas>
+  <canvas id ="debug_canvas"></canvas>
 </body>
 </html>

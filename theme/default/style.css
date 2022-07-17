@@ -20,3 +20,7 @@ canvas {
 #ui_canvas {
 	z-index: 2;
 }
+
+#debug_canvas {
+	z-index: 3;
+}

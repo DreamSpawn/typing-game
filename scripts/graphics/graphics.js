@@ -71,10 +71,13 @@ class Graphics {
     this.background_ctx = this.background.getContext("2d");
     this.load_backround_images();
    
-    this.ui = $("#ui_canvas")[0];;
+    this.ui = $("#ui_canvas")[0];
     this.ui_ctx = this.ui.getContext("2d");
     this.load_UI_images();
     this.gun_angle = 0;
+
+    this.debug = $("#debug_canvas")[0];
+    this.debug_ctx = this.ui.getContext("2d");
 
     this.menu = new Graphics_Menu();
     this.is_fullscreen = false;
@@ -114,6 +117,9 @@ class Graphics {
     this.ui.width = width;
     this.ui.height = height;
     
+    this.debug.width = width;
+    this.debug.height = height;
+
     //----------------------------------------------------------------------------------
     // Graphical settings
     //----------------------------------------------------------------------------------

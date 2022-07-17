@@ -6,6 +6,9 @@ class Settings{
   // Loading previously saved settings or use default values at startup
   static load() {
     // Legal settings
+    Settings.debug = localStorage.debug === "true" ? true : false;
+
+    // Legal settings
     Settings.legal_accept = parseInt(localStorage.legal_accept) === Settings.legal_version ? true : false;
 
     // Difficulty settings
