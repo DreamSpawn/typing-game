@@ -141,9 +141,13 @@ class Menu {
     // Legal stuff
     this.legal_page = new MenuItem(this.header_legal);
     this.legal_page.sub_text = [
+      "",
       "This game is made with a script running on your computer.",
       "It will save various settings in your browser's local storage.",
       "It will not share any information with any 3rd party.",
+      "",
+      "(You will not see this message again on the same machine",
+      "after you accept, unless these terms change)"
     ]
 
     var accept = new MenuItem("I accept");
@@ -151,6 +155,7 @@ class Menu {
       Settings.accept_legal(); 
       this.current = this.main_menu;
     });
+    this.legal_page.text_allign = "left";
     this.legal_page.add_item(accept);
 
     //new game
