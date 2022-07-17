@@ -291,20 +291,12 @@ class Menu {
     //----------------------------------------------------------------------------------
     // Save difficulty
     //----------------------------------------------------------------------------------
-    var save = new MenuItem("Save Difficulty");
-    save.sub_text = [ 
-      "This wil save your settings on your computer and", 
-      "automatically load them next time you open the game.",
-      "Do you accept saving this data on your computer?"
-    ];
-    difficulty.add_item(save);
-
-    var yes = new MenuItem("I accept");
-    yes.set_action(() => { 
+    var save = new MenuItem("Apply");
+    save.set_action(() => { 
       Settings.save_difficulty(); 
       menu.back();
     });
-    save.add_item(yes);
+    difficulty.add_item(save);
 
     //----------------------------------------------------------------------------------
     // Settings menu
@@ -461,20 +453,12 @@ class Menu {
     //----------------------------------------------------------------------------------
     // Save settings
     //----------------------------------------------------------------------------------
-    var save = new MenuItem("Save Settings");
-    save.sub_text = [ 
-      "This wil save your settings on your computer and", 
-      "automatically load them next time you open the game.",
-      "Do you accept saving this data on your computer?"
-    ];
-    settings_menu.add_item(save);
-
-    var yes = new MenuItem("I accept");
-    yes.set_action(() => { 
+    var save = new MenuItem("Apply");
+    save.set_action(() => { 
       Settings.save_settings(); 
       menu.back();
     });
-    save.add_item(yes);
+    settings_menu.add_item(save);
 
     //----------------------------------------------------------------------------------
     // Instructions
