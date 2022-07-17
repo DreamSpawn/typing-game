@@ -1,0 +1,8 @@
+Difficulty:
+  levels end?
+  Boss fights?
+  option for errors to cost hp
+
+UI:
+  Mouse support?
+  More Themes?

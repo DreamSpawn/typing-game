@@ -1,0 +1,41 @@
+<select name="lesson" id="IDLesson" style="font-family:Arial; font-size:large; font-weight:bold; color:black; border:solid; border-width:1px; border-color:black; ">
+	<option selected="" value="1">#1 Homerow only</option>
+	<option value="2">#2 Homerow + en</option>
+	<option value="3">#3 Homerow + enut</option>
+	<option value="4">#4 Homerow + enutro</option>
+	<option value="5">#5 Homerow + enutroci</option>
+	<option value="6">#6 Homerow + enutrocipv</option>
+	<option value="7">#7 Homerow + enutrocipvwm</option>
+	<option value="8">#8 Homerow + enutrocipvwmbygh</option>
+	<option value="9">#9 Letters only</option>
+	<option value="10">#10 Letters only, no shift</option>
+	<option value="11">#11 Letters and punctuation</option>
+	<option value="12">#12 Letters and numbers</option>
+	<option value="13">#13 All keys</option>
+	<option value="14">#14 emphasize LEFT hand</option>
+	<option value="15">#15 emphasize RIGHT hand</option>
+	<option value="16">#16 emphasize LEFT pinky</option>
+	<option value="17">#17 emphasize LEFT ring</option>
+	<option value="18">#18 emphasize LEFT middle</option>
+	<option value="19">#19 emphasize LEFT index</option>
+	<option value="20">#20 emphasize RIGHT pinky</option>
+	<option value="21">#21 emphasize RIGHT ring</option>
+	<option value="22">#22 emphasize RIGHT middle</option>
+	<option value="23">#23 emphasize RIGHT index</option>
+	<option value="24">#24 emphasize NUMBERS</option>
+	<option value="25">#25 10-key lesson</option>
+	<option value="26">#26 Classic Tales</option>
+	<option value="27">#27 Classic Tales</option>
+	<option value="28">#28 Classic Tales</option>
+	<option value="29">#29 Classic Tales</option>
+	<option value="30">#30 Classic Tales</option>
+	<option value="31">#31 Classic Tales</option>
+	<option value="32">#32 Classic Tales</option>
+	<option value="33">#33 Classic Tales</option>
+	<option value="34">#34 Classic Tales</option>
+	<option value="35">#35 Classic Tales</option>
+	<option value="36">#36 Commonly Misspelled Words</option>
+	<option value="37">#37 Commonly Misspelled Words</option>
+	<option value="38">#38 Spanish Words</option><option value="39">#39 French Words</option>
+	<option value="40">#40 German Words</option>
+</select>
