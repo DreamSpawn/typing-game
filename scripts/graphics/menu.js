@@ -83,18 +83,20 @@ class Graphics_Menu {
       context.translate(0, this.font_size);
     }
    
-    var padding = font_size_small*0.1;
-    context.font = "bold " + font_size_small + "px Courier";
-    context.textAlign = "left";
-    context.translate(-420, 0);
-    context.translate(0, font_size_small + padding);
-    context.fillText("Use up/down arrow keys or k/j to navigate menu", 0, 0);
-    context.translate(0, font_size_small + padding);
-    context.fillText("Use left/right arrow or h/l to change values", 0, 0);
-    context.translate(0, font_size_small + padding);
-    context.fillText("Press spacebar to activate", 0, 0);
-    context.translate(0, font_size_small + padding);
-    context.fillText("Press F10 or Escape to pause game at any point", 0, 0);
+    if (!menu.current.hidenav) {
+      var padding = font_size_small*0.1;
+      context.font = "bold " + font_size_small + "px Courier";
+      context.textAlign = "left";
+      context.translate(-420, 0);
+      context.translate(0, font_size_small + padding);
+      context.fillText("Use up/down arrow keys or k/j to navigate menu", 0, 0);
+      context.translate(0, font_size_small + padding);
+      context.fillText("Use left/right arrow or h/l to change values", 0, 0);
+      context.translate(0, font_size_small + padding);
+      context.fillText("Press Spacebar or Enter to activate", 0, 0);
+      context.translate(0, font_size_small + padding);
+      context.fillText("Press F10 or Escape to pause game at any point", 0, 0);
+    }
 
     context.font = font_before;
     context.textAlign = allign_before;
