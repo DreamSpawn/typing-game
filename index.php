@@ -5,7 +5,8 @@
 
   function addScript($src) { 
     ?>
-      <script src="<?=$src?>?v=<?=filemtime(__DIR__.$src)?>" type="text/javascript" defer="defer" ></script>
+      <script src="<?=$src?>?v=<?=filemtime(__DIR__."/".$src)?>" type="text/javascript" defer="defer" ></script>
+      <!-- <?=__DIR__."/typegame/".$src?> -->
     <?php
   }
 

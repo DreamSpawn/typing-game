@@ -5,6 +5,7 @@ class Menu {
     this.header_deafult = "Main Menu";
     this.header_lost = "Game Over";
     this.header_pause = "Pause Menu";
+    this.header_legal = "Legal Stuff";
     this.menu_initialize();
   }
   //----------------------------------------------------------------------------------
@@ -132,8 +133,25 @@ class Menu {
   // Menu builder
   //----------------------------------------------------------------------------------
   menu_initialize(){
-    //main menu
+    //----------------------------------------------------------------------------------
+    // Main Menu
+    //----------------------------------------------------------------------------------
     this.main_menu = new MenuItem(this.header_deafult);
+
+    // Legal stuff
+    this.legal_page = new MenuItem(this.header_legal);
+    this.legal_page.sub_text = [
+      "This game is made with a script running on your computer.",
+      "It will save various settings in your browser's local storage.",
+      "It will not share any information with any 3rd party.",
+    ]
+
+    var accept = new MenuItem("I accept");
+    accept.set_action(() => { 
+      Settings.accept_legal(); 
+      this.current = this.main_menu;
+    });
+    this.legal_page.add_item(accept);
 
     //new game
     var new_game = new MenuItem("New Game");
@@ -524,9 +542,9 @@ class Menu {
     //----------------------------------------------------------------------------------
     // Setting up initial state
     //----------------------------------------------------------------------------------
-    this.current = this.main_menu;
     this.selected = 0;
     this.previous_index = [];
+    this.current = Settings.legal_accept ? this.main_menu : this.legal_page;
   }
 }
 

@@ -1,8 +1,13 @@
 "use strict";
 
 class Settings{
+  static legal_version = 1;  
+
   // Loading previously saved settings or use default values at startup
   static load() {
+    // Legal settings
+    Settings.legal_accept = parseInt(localStorage.legal_accept) === Settings.legal_version ? true : false;
+
     // Difficulty settings
     Settings.letter_difficulty = parseInt(localStorage.letter_difficulty) || 0;
     Settings.word_length_max = parseInt(localStorage.word_length_max) || 7;
@@ -32,8 +37,16 @@ class Settings{
     Settings.show_input = localStorage.show_input === "false" ? false : true;
   }
 
+  // Accept legal stuff
+  static accept_legal() {
+    Settings.legal_accept = true;
+    localStorage.legal_accept = Settings.legal_version;
+  }
+
   // Save current settings for next visit
   static save_difficulty(){
+    if (!Settings.legal_accept) return;
+
     // Difficulty settings
     localStorage.letter_difficulty = Settings.letter_difficulty;
     localStorage.word_length_max = Settings.word_length_max;
@@ -45,7 +58,9 @@ class Settings{
   }
 
   static save_settings(){
-      // Music settings
+    if (!Settings.legal_accept) return;
+
+    // Music settings
     localStorage.music_menu_enabled = Settings.music_menu_enabled;
     localStorage.music_game_enabled = Settings.music_game_enabled;
     localStorage.music_volume = Settings.music_volume;
