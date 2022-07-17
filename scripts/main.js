@@ -42,11 +42,11 @@ function frame_update (){
 // Handling keyboard input
 //----------------------------------------------------------------------------------
 function input_first(event) {
-	if(menu.on_main) sound_system.main_menu();
 	$(window).off("keydown");
 	$(window).off("click");
 	$(window).keydown(input);
-	if (event.type === "keydown")	input(event);
+	if (event.type === "keydown") input(event);
+	if(menu.on_main) sound_system.main_menu();
 }
 function input(event) {
 	var k = event.key.toLowerCase();
