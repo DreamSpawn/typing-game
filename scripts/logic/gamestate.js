@@ -5,15 +5,11 @@ class GameState {
     this.active = false;
     this.lost = false;
 		this.words = [];
-		this.scored_words = [];
-		this.crashed_words = [];
   }
 
   reset(){
 		this.input = "";
 		this.words = [];
-		this.scored_words = [];
-		this.crashed_words = [];
     this.score = 0;
     this.typos = 0;
     this.strokes = 0;

@@ -18,16 +18,16 @@ class Logic {
 			game_state.current_delay += game_state.word_delay;
 			Logic.spawn_word();
 		}
+
+		let crash = false;
 		for (var i = 0; i < game_state.words.length; i++) {
 			if (game_state.words[i].update(elapsed)) {
-				let word = game_state.words.splice(i, 1)[0];
-				Logic.crash_word(word);
-				i--;
+				crash = true;
 			}
 		}
+		if (crash) Logic.word_crash();
 
 		if(!Settings.escalate) return;
-		
 		game_state.escalate_delay -= elapsed;
 		if(game_state.escalate_delay < 0){
 			game_state.escalate_delay = Settings.escalate_time;
@@ -60,11 +60,11 @@ class Logic {
 		if (hit) {
 			let word = game_state.words.splice(index, 1)[0];
 			Logic.score_word(word);
+			graphics.shoot(word);
 		} else {
 			game_state.score -= this.penalty;
 			game_state.typos++
 		}
-
 	
 		return hit;
 	}
@@ -80,23 +80,31 @@ class Logic {
 		graphics.spawn_word();
 	}
 	
-	static crash_word(word) {
-		game_state.crashed_words.unshift(word);
-		if (game_state.hitpoints_max !== 10) game_state.hitpoints_current--;
-		sound_system.crash();
-		graphics.crash();
-		if (game_state.hitpoints_current < 1){
-			game_state.running = false;
-			game_state.active = false;
-			game_state.lost = true;
-			menu.lost();
-			sound_system.game_over();
+	static word_crash() {
+		for (var i = 0; i < game_state.words.length;) {
+			if (game_state.words[i].dist < Settings.crash_clear) {
+				let word = game_state.words.splice(i, 1)[0];
+				graphics.crash(word);
+			} else {
+				i++;
+			}
 		}
+		sound_system.crash();
+		if (game_state.hitpoints_max !== 10) {
+			game_state.hitpoints_current--;
+			if (game_state.hitpoints_current < 1){
+				game_state.running = false;
+				game_state.active = false;
+				game_state.lost = true;
+				menu.lost();
+				sound_system.game_over();
+			}
+		}
+		game_state.input = "";
 		graphics.ui_update();
 	}
 	
 	static score_word(word) {
-		game_state.scored_words.unshift(word);
 		word.calc_score();
 		if (game_state.words.length === 0){
 			// Spawn 2 new words and reset delay
@@ -104,6 +112,7 @@ class Logic {
 			game_state.current_delay = 0;
 
 			word.score *= 2; // Bonus score for clearing screen
+			game_state.escalate_delay = 0; // Speed up word spawn rate when screen is cleared
 			game_state.screen_clears++;
 		}
 		game_state.score += word.score;

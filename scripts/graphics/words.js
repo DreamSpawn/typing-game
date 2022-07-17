@@ -10,8 +10,8 @@ boxes on screen.
 //----------------------------------------------------------------------------------
 // Calculating and saving word position of a shot word
 //----------------------------------------------------------------------------------
-Graphics.prototype.shoot = function () {
-  var word = game_state.scored_words[0];
+Graphics.prototype.shoot = function (word) {
+  this.scored_words.push(word);
   word.time = Date.now();
 
   word.y = this.word_bottom_y / 100 * (100 - word.dist) + 1 + this.font_size / 2;
@@ -19,12 +19,12 @@ Graphics.prototype.shoot = function () {
   this.gun_angle = Math.atan2(this.gun_y - word.y, this.gun_x - word.x) - Math.PI / 2;
 }
 //----------------------------------------------------------------------------------
-// Calculating and saving word position of a shot word
+// Calculating and saving word position of crashed words
 //----------------------------------------------------------------------------------
-Graphics.prototype.crash = function () {
-  var word = game_state.crashed_words[0];
-  word.time = Date.now();
+Graphics.prototype.crash = function (word) {
+  this.crashed_words.push(word);
 
+  word.time = Date.now();
   word.y = this.word_bottom_y / 100 * (100 - word.dist) + 1 + this.font_size / 2;
 }
 //----------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ Graphics.prototype.draw_input = function(){
 //----------------------------------------------------------------------------------
 Graphics.prototype.draw_words = function(){
   game_state.words.forEach(this.draw_single_word,this);
-  game_state.scored_words.forEach(this.draw_scored_word,this);
-  game_state.crashed_words.forEach(this.draw_dead_word,this);
+  this.scored_words.forEach(this.draw_scored_word,this);
+  this.crashed_words.forEach(this.draw_dead_word,this);
 }
 
 Graphics.prototype.draw_single_word = function(word){

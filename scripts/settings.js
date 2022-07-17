@@ -22,6 +22,7 @@ class Settings{
     if (isNaN(Settings.difficulty_level)) {
       Settings.set_difficulty_level(1);
     }
+    Settings.crash_clear = 50; // How much of the screen is cleared when a word crash
     
     // Music settings
     Settings.music_menu_enabled = localStorage.music_menu_enabled === "false" ? false : true ;

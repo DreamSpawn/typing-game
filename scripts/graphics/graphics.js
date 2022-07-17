@@ -84,6 +84,12 @@ class Graphics {
 
     // getting initial size of browser window
     this.resize();
+
+    //----------------------------------------------------------------------------------
+    // Initialising word lists
+    //----------------------------------------------------------------------------------
+    this.scored_words = [];
+    this.crashed_words = [];
   }
   //----------------------------------------------------------------------------------
   // Saving values for resized window and redrawing background and userinterface
@@ -184,7 +190,7 @@ class Graphics {
       document.mozFullScreen || 
       document.webkitIsFullScreen ||
       document.msfullscreen;
-      this.ui_update();
+    this.ui_update();
   }
   //----------------------------------------------------------------------------------
   // Drawing backround
@@ -204,7 +210,7 @@ class Graphics {
     this.main_ctx.clearRect(0, 0, this.main.width, this.main.height);
     // checking if we recently shot a word
     // and drawing laser if needed
-    var word = game_state.scored_words[0];
+    var word = this.scored_words[0];
     if (word != null && Date.now() < word.time + this.laser_time + this.laser_fade) {
       var alpha = 0;
       if (Date.now() > word.time + this.laser_time) {
@@ -221,13 +227,18 @@ class Graphics {
       this.main_ctx.stroke();
     }
   
-    // drawinf words on top of other elements
+    // drawing words on top of other elements
     this.draw_words();
   
     // cleaning out old words
-    var words = game_state.scored_words;
-    while (words.length > 0 && words[words.length - 1].time < Date.now() - this.discard_time) {
-      words.pop();
+    var words = this.scored_words;
+    while (words.length > 0 && words[0].time < Date.now() - this.discard_time) {
+      words.shift();
+    }
+
+    var words = this.crashed_words;
+    while (words.length > 0 && words[0].time < Date.now() - this.discard_time) {
+      words.shift();
     }
   }
   //----------------------------------------------------------------------------------
