@@ -99,6 +99,9 @@ class Menu {
     this.current = this.current.parent;
     if (this.current === this.pause_menu && !game_state.active){
       this.current = this.main_menu;
+      if (sound_system.music_started == false) {
+        sound_system.main_menu();
+      }
     }
   }
 
@@ -129,16 +132,34 @@ class Menu {
       this.selected = this.selected < 0 ? this.selected + this.current.sub_menu.length : this.selected;
     }
   }
+
+  toMain() {
+    this.selected = 0;
+    this.previous_index = [];
+    if (!Settings.legal_accept) {
+      this.current = this.legal_page;
+      return;
+    }
+
+    if (isNaN(Settings.difficulty_level)) {
+      Settings.set_difficulty_level(1);
+      this.current = this.main_menu.sub_menu[1]; // Go to Difficulty menu
+      this.previous_index = [0];
+      this.selected = 0;
+      return;
+    }
+
+    this.on_main = true;
+    this.current = this.main_menu;
+  }
+
   //----------------------------------------------------------------------------------
   // Menu builder
   //----------------------------------------------------------------------------------
   menu_initialize(){
     //----------------------------------------------------------------------------------
-    // Main Menu
-    //----------------------------------------------------------------------------------
-    this.main_menu = new MenuItem(this.header_deafult);
-
     // Legal stuff
+    //----------------------------------------------------------------------------------
     this.legal_page = new MenuItem(this.header_legal);
     this.legal_page.sub_text = [
       "",
@@ -147,16 +168,24 @@ class Menu {
       "It will not share any information with any 3rd party.",
       "",
       "(You will not see this message again on the same machine",
-      "after you accept, unless these terms change)"
-    ]
+      "after you accept, unless these terms change)",
+      "",
+      "Press Enter to continue"
+    ];
+    this.legal_page.hidenav = true;
 
     var accept = new MenuItem("I accept");
     accept.set_action(() => { 
       Settings.accept_legal(); 
-      this.current = this.main_menu;
+      this.toMain();
     });
     this.legal_page.text_allign = "left";
     this.legal_page.add_item(accept);
+
+    //----------------------------------------------------------------------------------
+    // Main Menu
+    //----------------------------------------------------------------------------------
+    this.main_menu = new MenuItem(this.header_deafult);
 
     //new game
     var new_game = new MenuItem("New Game");
@@ -167,6 +196,7 @@ class Menu {
     // Dificulty menu
     //----------------------------------------------------------------------------------
     var difficulty = new MenuItem("Difficulty");
+    difficulty.header = "Select Difficulty";
     Object.defineProperty(difficulty, 'sub_text', { get: function() { 
       return game_state.active ? "Changes will be applied to the next game" : null; 
     }});
@@ -199,8 +229,15 @@ class Menu {
       Settings.set_difficulty(Settings.letter_difficulty, Settings.word_length_max - 1);
       Settings.difficulty_level = 0;
     });
-    Object.defineProperty(word_length, 'value', { get: function() { 
-      return Settings.word_length_max === 7 ? "∞" : Settings.word_length_max; 
+    Object.defineProperty(word_length, 'value', { get: function() {
+      switch (Settings.word_length_max) {
+        case 1:
+          return "Single Letters";
+        case 7:
+          return "∞";
+        default:
+          return Settings.word_length_max;
+      }
     }});
     difficulty.add_item(word_length);
 
@@ -260,11 +297,12 @@ class Menu {
     }});
     difficulty.add_item(random_speed);
 
-    // Select included letters
+    // Empty line
     var space = new MenuItem("");
     space.filler = true;
     difficulty.add_item(space);
 
+    // Select included letters
     var letters_label = new MenuItem("Included Letters:");
     letters_label.filler = true;
     difficulty.add_item(letters_label);
@@ -293,10 +331,8 @@ class Menu {
 
     difficulty.add_item(space);
 
-    //----------------------------------------------------------------------------------
     // Save difficulty
-    //----------------------------------------------------------------------------------
-    var save = new MenuItem("Apply");
+    var save = new MenuItem("Save Difficulty");
     save.set_action(() => { 
       Settings.save_difficulty(); 
       menu.back();
@@ -309,12 +345,59 @@ class Menu {
     var settings_menu = new MenuItem("Settings");
     this.main_menu.add_item(settings_menu);
     
-    //----------------------------------------------------------------------------------
-    // Audio settings menu
-    //----------------------------------------------------------------------------------
-    var audio = new MenuItem("Audio Settings");
-    settings_menu.add_item(audio);
-    
+    //menu music toggle
+    var music_menu = new MenuItem("Menu Music Toggle");
+    music_menu.value = Settings.music_menu_enabled ? "ON" : "OFF";
+    music_menu.set_action(() => {
+      if (Settings.music_menu_toggle()) {
+        music_menu.value = "ON";
+      } else {
+        music_menu.value = "OFF";
+      }
+    });
+    music_menu.set_left(music_menu.action);
+    music_menu.set_right(music_menu.action);
+    settings_menu.add_item(music_menu);
+
+    //game music toggle
+    var music_game = new MenuItem("Game Music Toggle");
+    music_game.value = Settings.music_game_enabled ? "ON" : "OFF";
+    music_game.set_action(() => {
+      if (Settings.music_game_toggle()) {
+        music_game.value = "ON";
+      } else {
+        music_game.value = "OFF";
+      }
+    });
+    music_game.set_left(music_game.action);
+    music_game.set_right(music_game.action);
+    settings_menu.add_item(music_game);
+
+    //music volume
+    var music_volume = new MenuItem("Music Volume");
+    Object.defineProperty(music_volume, 'value', { 
+      set: function(value) {
+        var dashes = "----------";
+        this._value = dashes.slice(0,value) + "|" + dashes.slice(value);
+        },
+      get: function() { 
+        return this._value ; 
+      }
+    });
+    music_volume.set_right(() => {
+      music_volume.value = Settings.music_up();
+    });
+    music_volume.set_left(() => {
+      music_volume.value = Settings.music_down();
+    });
+    music_volume.value = Settings.music_volume;
+    settings_menu.add_item(music_volume);
+
+    // Empty line
+    var space = new MenuItem("");
+    space.filler = true;
+    settings_menu.add_item(space);
+
     //menu clicks toggle
     var menu_sound = new MenuItem("Menu FX Toggle");
     menu_sound.value = Settings.sound_menu_enabled ? "ON" : "OFF";
@@ -327,7 +410,7 @@ class Menu {
     });
     menu_sound.set_left(menu_sound.action);
     menu_sound.set_right(menu_sound.action);
-    audio.add_item(menu_sound);
+    settings_menu.add_item(menu_sound);
 
     //typing clicks toggle
     var typing = new MenuItem("Typing FX Toggle");
@@ -341,7 +424,7 @@ class Menu {
     });
     typing.set_left(typing.action);
     typing.set_right(typing.action);
-    audio.add_item(typing);
+    settings_menu.add_item(typing);
 
     //sound fx toggle
     var sound = new MenuItem("Sound FX Toggle");
@@ -355,7 +438,7 @@ class Menu {
     });
     sound.set_left(sound.action);
     sound.set_right(sound.action);
-    audio.add_item(sound);
+    settings_menu.add_item(sound);
 
     //sound fx volume
     var sound_volume = new MenuItem("Sound FX Volume");
@@ -377,55 +460,12 @@ class Menu {
       sound_system.crash();
     });
     sound_volume.value = Settings.sound_volume;
-    audio.add_item(sound_volume);
+    settings_menu.add_item(sound_volume);
 
-    //menu music toggle
-    var music_menu = new MenuItem("Menu Music Toggle");
-    music_menu.value = Settings.music_menu_enabled ? "ON" : "OFF";
-    music_menu.set_action(() => {
-      if (Settings.music_menu_toggle()) {
-        music_menu.value = "ON";
-      } else {
-        music_menu.value = "OFF";
-      }
-    });
-    music_menu.set_left(music_menu.action);
-    music_menu.set_right(music_menu.action);
-    audio.add_item(music_menu);
-
-    //game music toggle
-    var music_game = new MenuItem("Game Music Toggle");
-    music_game.value = Settings.music_game_enabled ? "ON" : "OFF";
-    music_game.set_action(() => {
-      if (Settings.music_game_toggle()) {
-        music_game.value = "ON";
-      } else {
-        music_game.value = "OFF";
-      }
-    });
-    music_game.set_left(music_game.action);
-    music_game.set_right(music_game.action);
-    audio.add_item(music_game);
-
-    //music volume
-    var music_volume = new MenuItem("Music Volume");
-    Object.defineProperty(music_volume, 'value', { 
-      set: function(value) {
-        var dashes = "----------";
-        this._value = dashes.slice(0,value) + "|" + dashes.slice(value);
-        },
-      get: function() { 
-        return this._value ; 
-      }
-    });
-    music_volume.set_right(() => {
-      music_volume.value = Settings.music_up();
-    });
-    music_volume.set_left(() => {
-      music_volume.value = Settings.music_down();
-    });
-    music_volume.value = Settings.music_volume;
-    audio.add_item(music_volume);
+    // Empty line
+    var space = new MenuItem("");
+    space.filler = true;
+    settings_menu.add_item(space);
 
     //----------------------------------------------------------------------------------
     // Full screen toggle
@@ -436,8 +476,8 @@ class Menu {
     });
     fullscreen.set_left(fullscreen.action);
     fullscreen.set_right(fullscreen.action);
-    Object.defineProperty(fullscreen, 'label', { get: function() { 
-      return graphics.is_fullscreen ? this.header + " ON" : this.header + " OFF" ; 
+    Object.defineProperty(fullscreen, 'value', { get: function() { 
+      return graphics.is_fullscreen ? "ON" : "OFF" ; 
     }});
     settings_menu.add_item(fullscreen);
 
@@ -447,18 +487,23 @@ class Menu {
     var input_show = new MenuItem("Show input on words:");
     input_show.set_action(() => {
         Settings.show_input = !Settings.show_input;
-    });
+      });
     input_show.set_left(input_show.action);
     input_show.set_right(input_show.action);
-    Object.defineProperty(input_show, 'label', { get: function() { 
-      return Settings.show_input ? this.header + " ON" : this.header + " OFF" ; 
+    Object.defineProperty(input_show, 'value', { get: function() { 
+      return Settings.show_input ? "ON" : "OFF" ; 
     }});
     settings_menu.add_item(input_show);
+
+    // Empty line
+    var space = new MenuItem("");
+    space.filler = true;
+    settings_menu.add_item(space);
 
     //----------------------------------------------------------------------------------
     // Save settings
     //----------------------------------------------------------------------------------
-    var save = new MenuItem("Apply");
+    var save = new MenuItem("Save Settings");
     save.set_action(() => { 
       Settings.save_settings(); 
       menu.back();
@@ -525,15 +570,13 @@ class Menu {
     restart.add_item(yes);
     
     for (var i = 1; i < this.main_menu.sub_menu.length; i++){
-          this.pause_menu.add_item(this.main_menu.sub_menu[i]);
+      this.pause_menu.add_item(this.main_menu.sub_menu[i]);
     }
 
     //----------------------------------------------------------------------------------
     // Setting up initial state
     //----------------------------------------------------------------------------------
-    this.selected = 0;
-    this.previous_index = [];
-    this.current = Settings.legal_accept ? this.main_menu : this.legal_page;
+    this.toMain();
   }
 }
 
@@ -541,7 +584,7 @@ class Menu {
 // Class for representing elements of the menu
 //----------------------------------------------------------------------------------
 class MenuItem {
-  constructor(label,sub_menu){
+  constructor(label){
     this.parent = null;
     this.label = label;
     this.header = label;
@@ -551,6 +594,7 @@ class MenuItem {
     this.left = null;
     this.right = null;
     this.value = null;
+    this.hidenav = false;
   }
 
   set_action(func){

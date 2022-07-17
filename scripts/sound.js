@@ -2,8 +2,8 @@
 
 class SoundManager {
   constructor() {
+    this.music_started = false;
     this.music_menu = new Sound("theme/pelle/TypeGame.mp3", true, 0.05);
-  
     this.music_game = new Sound("theme/pelle/TypeGame_trapmix_02.mp3", true, 0.2);
 
     this.sound_fx = [];
@@ -15,14 +15,14 @@ class SoundManager {
 
     this.music_current = null;
 
-    /*this.music_menu_enabled = true;
-    this.music_game_enabled = true;
-    this.music_volume = 5;
+    this.music_menu_enabled = Settings.music_menu_enabled;
+    this.music_game_enabled = Settings.music_game_enabled;
+    this.set_music_volume(Settings.music_volume);
     
-    this.sound_enabled = true;
-    this.sound_menu_enabled = true;
-    this.sound_typing_enabled = true;
-    this.sound_volume = 5;*/
+    this.sound_menu_enabled = Settings.sound_menu_enabled;
+    this.sound_enabled = Settings.sound_enabled;
+    this.sound_typing_enabled = Settings.sound_typing_enabled;
+    this.set_sound_volume(Settings.sound_volume);
   }
 
   add_sound_fx(src, loop, volume){
@@ -37,6 +37,7 @@ class SoundManager {
     if (this.music_current !== null) this.music_current.pause();
     this.music_current = this.music_menu;
     if (this.music_menu_enabled) this.music_current.play();
+    this.music_started = true;
   }
 
   game_start(){
@@ -46,13 +47,11 @@ class SoundManager {
   }
 
   game_over(){
-    this.pause();
+    this.main_menu();
   }
 
   pause(){
-    this.music_current.pause();
-    this.music_current = this.music_menu;
-    if (this.music_menu_enabled) this.music_current.play();
+    this.main_menu();
   }
 
   resume() {

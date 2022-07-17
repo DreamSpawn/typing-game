@@ -10,14 +10,11 @@ $(document).ready(function(){
 	Settings.load();
 
 	game_state = new GameState();
-
 	logic = new Logic();
-	
+	sound_system = new SoundManager();
+
 	graphics = new Graphics();
 	graphics.ui_update();
-
-	sound_system = new SoundManager();
-	Settings.sound_apply();
 
 	menu = new Menu();
 	Settings.apply();
@@ -45,7 +42,7 @@ function frame_update (){
 // Handling keyboard input
 //----------------------------------------------------------------------------------
 function input_first(event) {
-	sound_system.main_menu();
+	if(menu.on_main) sound_system.main_menu();
 	$(window).off("keydown");
 	$(window).off("click");
 	$(window).keydown(input);

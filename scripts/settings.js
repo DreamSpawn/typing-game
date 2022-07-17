@@ -19,9 +19,6 @@ class Settings{
     Settings.escalate = localStorage.escalate === "false" ? false : true;
     Settings.random_speed = localStorage.random_speed === "false" ? false : true;
     Settings.difficulty_level = parseInt(localStorage.difficulty_level);
-    if (isNaN(Settings.difficulty_level)) {
-      Settings.set_difficulty_level(1);
-    }
     Settings.crash_clear = 50; // How much of the screen is cleared when a word crash
     
     // Music settings
@@ -89,18 +86,6 @@ class Settings{
 
     Settings.word_delay = 6000 / Settings.spawn_rate;
     Settings.escalate_time = 15000; // this could possibly be a setting
-  }
-
-  // Updating sound settings every time they change
-  static sound_apply() {
-    sound_system.music_menu_enabled = Settings.music_menu_enabled;
-    sound_system.music_game_enabled = Settings.music_game_enabled;
-    sound_system.set_music_volume(Settings.music_volume);
-
-    sound_system.sound_enabled = Settings.sound_enabled;
-    sound_system.sound_menu_enabled = Settings.sound_menu_enabled;
-    sound_system.sound_typing_enabled = Settings.sound_typing_enabled;
-    sound_system.set_sound_volume(Settings.sound_volume);
   }
 
   //-----------------------------------------------------------------------------
