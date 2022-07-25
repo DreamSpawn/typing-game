@@ -19,6 +19,8 @@ $(document).ready(function(){
   menu = new Menu();
   Settings.apply();
 
+  Debug.init();
+
   $(window).keydown(input_first);
   $(window).click(input_first);
   $(window).resize(() => { graphics.resize() } );

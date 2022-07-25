@@ -3,7 +3,11 @@ class Debug {
   static font_size = 24;
   static font = "bold " + Debug.font_size + "px Courier";
 
-  static debug_ctx = $("#debug_canvas")[0].getContext("2d");
+  static debug_ctx 
+
+  static init() {
+    this.debug_ctx = $("#debug_canvas")[0].getContext("2d");
+  }
 
   static println(text) {
     let context = Debug.debug_ctx;
