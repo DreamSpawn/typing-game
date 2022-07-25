@@ -55,7 +55,7 @@ function input(event) {
 	if (k === " " || k === "enter"){
 		if (game_state.running){
 			if (game_state.input === "") return;
-		  if (logic.shoot()) {
+			if (logic.shoot()) {
 				sound_system.shoot();
 			} else {
 				sound_system.dud();
@@ -63,8 +63,8 @@ function input(event) {
 		} else {
 			menu.perform();
 		}
-	} else if (k === "f10" || k === "pause" || k === "escape" ){
 		event.preventDefault();
+	} else if (k === "f10" || k === "pause" || k === "escape" ){
 		if (game_state.running){
 			menu.pause();
 			sound_system.pause();
@@ -73,6 +73,7 @@ function input(event) {
 		} else if (game_state.active){
 			menu.resume();
 		}
+		event.preventDefault();
 	}	else if (k.match(/\w/) && k === k.match(/\w/)[0] && game_state.running){
 		logic.input(k);
 		if (game_state.single_letter_mode){
@@ -84,17 +85,22 @@ function input(event) {
 		} else {
 			sound_system.type();
 		}
+		event.preventDefault();
 	} else if (!game_state.running) {
 		if (k === "arrowup" || k === "k") {
 			menu.up();
 			sound_system.menu_click();
+      event.preventDefault();
 		} else if (k === "arrowdown" || k === "j") {
 			menu.down();
 			sound_system.menu_click();
+      event.preventDefault();
 		}	else if (k === "arrowleft" || k === "h") {
 			menu.left();
+      event.preventDefault();
 		}	else if (k === "arrowright" || k === "l") {
 			menu.right();
+      event.preventDefault();
 		}
 	}
 	graphics.ui_update();
