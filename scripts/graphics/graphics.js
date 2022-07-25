@@ -247,7 +247,7 @@ class Graphics {
   ui_update() {
     this.ui_ctx.clearRect(0, 0, this.main.width, this.main.height);
   
-    this.ui_ctx.globalAlpha= 1 / (game_state.hitpoints_max - 1) * (game_state.hitpoints_current - 1);
+    this.ui_ctx.globalAlpha= 1 / (game_state.hitpoints_max) * (game_state.hitpoints_current);
     this.ui_ctx.drawImage(this.img_shield, 0, this.word_border, this.background.width, this.img_shield.height);
     this.ui_ctx.drawImage(this.img_shield_glow, 0, this.word_border - this.img_shield_glow.height, this.background.width, this.img_shield_glow.height);
     this.ui_ctx.globalAlpha=1;

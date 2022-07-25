@@ -92,7 +92,7 @@ class Logic {
 		sound_system.crash();
 		if (game_state.hitpoints_max !== 10) {
 			game_state.hitpoints_current--;
-			if (game_state.hitpoints_current < 1){
+			if (game_state.hitpoints_current < 0){
 				game_state.running = false;
 				game_state.active = false;
 				game_state.lost = true;
