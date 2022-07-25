@@ -4,12 +4,12 @@ class GameState {
     this.running = false;
     this.active = false;
     this.lost = false;
-		this.words = [];
+  	this.words = [];
   }
 
   reset(){
-		this.input = "";
-		this.words = [];
+  	this.input = "";
+  	this.words = [];
     this.score = 0;
     this.typos = 0;
     this.strokes = 0;
