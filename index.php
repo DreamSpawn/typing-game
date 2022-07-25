@@ -11,7 +11,7 @@
   }
 
 ?>
-<!-- Copyright Mikkel Westh 2017 -->
+<!-- Copyright Mikkel Westh 2022 -->
 <!DOCTYPE html>
 <html>
 <head>
