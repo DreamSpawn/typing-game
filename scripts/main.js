@@ -23,8 +23,8 @@ $(document).ready(function(){
   $(window).click(input_first);
   $(window).resize(() => { graphics.resize() } );
   $(document).bind(
-  	'msfullscreenchange webkitfullscreenchange mozfullscreenchange fullscreenchange', 
-  	() => {graphics.fullscreen_change(); }
+    'msfullscreenchange webkitfullscreenchange mozfullscreenchange fullscreenchange', 
+    () => {graphics.fullscreen_change(); }
   );
   setInterval(frame_update, 1000/fps);
 });
@@ -35,7 +35,7 @@ function frame_update (){
   logic.frame_update();
   graphics.draw();
   if (Settings.debug) {
-  	Debug.draw();
+    Debug.draw();
   }
 }
 //----------------------------------------------------------------------------------
@@ -53,55 +53,55 @@ function input(event) {
   
   //console.log("onKey():" + k);
   if (k === " " || k === "enter"){
-  	if (game_state.running){
-  		if (game_state.input === "") return;
-  		if (logic.shoot()) {
-  			sound_system.shoot();
-  		} else {
-  			sound_system.dud();
-  		}
-  	} else {
-  		menu.perform();
-  	}
-  	event.preventDefault();
+    if (game_state.running){
+      if (game_state.input === "") return;
+      if (logic.shoot()) {
+        sound_system.shoot();
+      } else {
+        sound_system.dud();
+      }
+    } else {
+      menu.perform();
+    }
+    event.preventDefault();
   } else if (k === "f10" || k === "pause" || k === "escape" ){
-  	if (game_state.running){
-  		menu.pause();
-  		sound_system.pause();
-  	} else if (k === "escape") {
-  		menu.back();
-  	} else if (game_state.active){
-  		menu.resume();
-  	}
-  	event.preventDefault();
-  }	else if (k.match(/\w/) && k === k.match(/\w/)[0] && game_state.running){
-  	logic.input(k);
-  	if (game_state.single_letter_mode){
-  	  if (logic.shoot()) {
-  			sound_system.shoot();
-  		} else {
-  			sound_system.dud();
-  		}
-  	} else {
-  		sound_system.type();
-  	}
-  	event.preventDefault();
+    if (game_state.running){
+      menu.pause();
+      sound_system.pause();
+    } else if (k === "escape") {
+      menu.back();
+    } else if (game_state.active){
+      menu.resume();
+    }
+    event.preventDefault();
+  }  else if (k.match(/\w/) && k === k.match(/\w/)[0] && game_state.running){
+    logic.input(k);
+    if (game_state.single_letter_mode){
+      if (logic.shoot()) {
+        sound_system.shoot();
+      } else {
+        sound_system.dud();
+      }
+    } else {
+      sound_system.type();
+    }
+    event.preventDefault();
   } else if (!game_state.running) {
-  	if (k === "arrowup" || k === "k") {
-  		menu.up();
-  		sound_system.menu_click();
+    if (k === "arrowup" || k === "k") {
+      menu.up();
+      sound_system.menu_click();
       event.preventDefault();
-  	} else if (k === "arrowdown" || k === "j") {
-  		menu.down();
-  		sound_system.menu_click();
+    } else if (k === "arrowdown" || k === "j") {
+      menu.down();
+      sound_system.menu_click();
       event.preventDefault();
-  	}	else if (k === "arrowleft" || k === "h") {
-  		menu.left();
+    }  else if (k === "arrowleft" || k === "h") {
+      menu.left();
       event.preventDefault();
-  	}	else if (k === "arrowright" || k === "l") {
-  		menu.right();
+    }  else if (k === "arrowright" || k === "l") {
+      menu.right();
       event.preventDefault();
-  	}
+    }
   }
   graphics.ui_update();
 };

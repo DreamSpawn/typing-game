@@ -92,8 +92,8 @@ class Settings{
   // Difficulty settings
   //-----------------------------------------------------------------------------
   static set_difficulty(words, length){
-  	if (words < 0 || words >= WordList.all.length || 
-  			length < 1 || length > 7) return;
+    if (words < 0 || words >= WordList.all.length || 
+        length < 1 || length > 7) return;
 
     Settings.letter_difficulty = words != null ? words : Settings.letter_difficulty; 
     Settings.word_length_max = length != null ? length : Settings.word_length_max;
