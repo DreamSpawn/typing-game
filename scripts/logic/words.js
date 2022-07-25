@@ -104,7 +104,6 @@ class WordList {
     xmlhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         var raw = this.responseText;
-        raw = raw.replace(/\r/g, ""); //remove all carriage return characters
         list.words = raw.split("\n"); // split the list using newline as seperator
         WordList.pending--;
         if (WordList.pending === 0) {
