@@ -41,7 +41,7 @@ class SoundManager {
   }
 
   game_start(){
-    this.music_current.pause();
+    if (this.music_current !== null) this.music_current.pause();
     this.music_current = this.music_game;
     if (this.music_game_enabled) this.music_current.play();
   }
