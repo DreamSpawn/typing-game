@@ -12,7 +12,7 @@
 ?>
 <!-- Copyright Mikkel Westh 2022 -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -24,6 +24,8 @@
   <meta property="og:description" content="A game that runs in your browser for practicing touch typing" />
   <meta property="og:url" content="http://typegame.westh.it" />
   <meta property="og:image" content="http://typegame.westh.it/theme/pelle/screenshot.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   
   <link rel="stylesheet" type="text/css" href="theme/default/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
