@@ -64,6 +64,7 @@ class Logic {
     } else {
       game_state.score -= this.penalty;
       game_state.typos++
+      game_state.bonus_reset();
     }
   
     return hit;
@@ -99,10 +100,10 @@ class Logic {
         game_state.active = false;
         game_state.lost = true;
         menu.lost();
-        sound_system.game_over();
       }
     }
     game_state.input = "";
+    game_state.bonus_reset();
     graphics.ui_update();
   }
   
@@ -120,6 +121,7 @@ class Logic {
     }
     game_state.score += word.score;
     game_state.scored++;
+    game_state.bonus_up();
   }
 }
 

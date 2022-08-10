@@ -33,7 +33,10 @@ Graphics.prototype.crash = function (word) {
 Graphics.prototype.prepare_word = function (word) {
   word.width = this.main_ctx.measureText(word.text).width+this.font_padding_w*2;
   word.width_legs = word.width + 2 * this.img_legs.width;
-  word.left = (this.main.width-word.width - this.img_legs.width*2 -2)/100*word.pos + this.img_legs.width + 1;
+  let word_space = this.main.width - Graphics.left_panel_w;
+  let word_margin = this.img_legs.width + 1;
+  let word_freedom = word_space - word.width - word_margin*2
+  word.left = word_freedom/100*word.pos + word_margin + Graphics.left_panel_w;
   word.x = word.left + word.width/2;
   word.right = word.left + word.width;
 }

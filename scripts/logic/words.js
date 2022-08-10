@@ -70,6 +70,7 @@ class Word {
     this.score *= 0.9 + this.text.length/10;
     this.score *= 1.5 - game_state.hitpoints_max/10 ;
     this.score *= this.time_allive < 10000 ? 2 - this.time_allive/10000 : 1;
+    this.score *= game_state.bonus_multi;
     // rounding down
     this.score = Math.floor(this.score);
   }

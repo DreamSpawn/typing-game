@@ -47,8 +47,8 @@ function input_first(event) {
   $(window).off("keydown");
   $(window).off("click");
   $(window).keydown(input);
-  if (event.type === "keydown") input(event);
   if(menu.on_main) sound_system.main_menu();
+  if (event.type === "keydown") input(event);
 }
 
 function input(event) {
@@ -71,7 +71,6 @@ function input(event) {
   } else if (k === "f10" || k === "pause" || k === "escape" ){
     if (game_state.running){
       menu.pause();
-      sound_system.pause();
     } else if (k === "escape") {
       menu.back();
     } else if (game_state.active){

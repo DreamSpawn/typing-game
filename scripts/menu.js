@@ -13,10 +13,7 @@ class Menu {
   //----------------------------------------------------------------------------------
   new_game() {
     Settings.apply();
-    game_state.reset();
-    game_state.single_letter_mode = WordList.word_length_max === 1;
-    game_state.active = true;
-    game_state.running = true;
+    game_state.restart();
     sound_system.game_start();
     game_state.last_start = Date.now();
   }
@@ -26,6 +23,7 @@ class Menu {
     game_state.time_played += Date.now() - game_state.last_start;
     this.current = this.pause_menu;
     this.previous_index = [];
+    sound_system.pause();
   }
 
   resume() {
@@ -52,6 +50,7 @@ class Menu {
       "                  Errors: " + game_state.typos
     ];
     this.current.text_allign = "left";
+    sound_system.game_over();
   }
   //----------------------------------------------------------------------------------
   // Menu control functions

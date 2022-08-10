@@ -3,8 +3,8 @@
 class SoundManager {
   constructor() {
     this.music_started = false;
-    this.music_menu = new Sound("theme/pelle/TypeGame.mp3", true, 0.05);
-    this.music_game = new Sound("theme/pelle/TypeGame_trapmix_02.mp3", true, 0.2);
+    this.music_menu = new Sound("theme/pelle/TypeGame.mp3", true, 0.05, "music menu");
+    this.music_game = new Sound("theme/pelle/TypeGame_trapmix_02.mp3", true, 0.2, "music game");
 
     this.sound_fx = [];
     this.fx_laser = this.add_sound_fx("theme/pelle/laser.wav", false, 0.1);
@@ -26,7 +26,7 @@ class SoundManager {
   }
 
   add_sound_fx(src, loop, volume){
-    var fx = new Sound(src, loop, volume);
+    var fx = new Sound(src, loop, volume, "sfx");
     this.sound_fx.push(fx);
     return fx;
   }
@@ -113,12 +113,13 @@ class SoundManager {
 // Audio element wrapper class
 //----------------------------------------------------------------------------------
 class Sound {
-  constructor(src, loop, volume) {
+  constructor(src, loop, volume, category) {
     this.volume_modifier = volume ? volume : 0.1; 
     this.element = document.createElement("audio");
     this.element.src = src;
     this.element.loop = loop ? true : false;
     this.element.volume = this.volume_modifier;
+    this.category = category ?? "misc";
   }
 
   set_volume(volume){
@@ -127,7 +128,10 @@ class Sound {
 
   play() {
     this.element.currentTime = 0;
-    this.element.play();
+    let promise = this.element.play();
+    if (promise === undefined) return;
+
+    promise.catch(() => {/*prevent console error*/});
   }
 
   pause(){

@@ -43,6 +43,12 @@ var input_margin = 10;
 var bottom_margin = 80;
     
 class Graphics {
+  //----------------------------------------------------------------------------------
+  // Graphical settings (move other settings here)
+  //----------------------------------------------------------------------------------
+  static left_panel_w = 80; // Left panel width
+
+
   constructor() {
     //----------------------------------------------------------------------------------
     // Animation times
@@ -95,15 +101,7 @@ class Graphics {
   // Saving values for resized window and redrawing background and userinterface
   //----------------------------------------------------------------------------------
   resize() {
-  /*  // updating canvas sizes
-    this.main.width = this.main.clientWidth;
-    this.main.height = this.main.clientHeight;
-    
-    this.background.width = this.background.clientWidth;
-    this.background.height = this.background.clientHeight;
-    
-    this.ui.width = this.ui.clientWidth;
-    this.ui.height = this.ui.clientHeight;*/
+    // updating canvas sizes
     var ratio = this.main.clientWidth / this.main.clientHeight;
     var width, height;
     if( ratio < 1){
@@ -309,6 +307,12 @@ class Graphics {
       if (menu) this.menu.draw(this.ui_ctx);
     } else {
       document.body.style.cursor = "none";
+    }
+
+    // Bonus
+    if (game_state.running) {
+      this.word_box(game_state.bonus_multi, this.hp_margin_x, 10, 40, "blue", this.ui_ctx);
+      this.word_box(game_state.bonus_pip, this.hp_margin_x, 80, 40, "yellow", this.ui_ctx);
     }
   }
   //----------------------------------------------------------------------------------

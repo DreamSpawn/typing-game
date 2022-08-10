@@ -82,8 +82,6 @@ class Settings{
     WordList.word_length_max = Settings.word_length_max;
     WordList.update_list();
 
-    game_state.hitpoints_max = Settings.hitpoints_max;
-
     Settings.word_delay = 6000 / Settings.spawn_rate;
     Settings.escalate_time = 15000; // this could possibly be a setting
   }
