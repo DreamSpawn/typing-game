@@ -53,9 +53,10 @@ function input_first(event) {
 
 function input(event) {
   var k = event.key.toLowerCase();
-  event.preventDefault(); // Prevent search bar even if we made a typo that isn't one of the used keys
-  
-  //console.log("onKey():" + k);
+  if ( k.match(/f(\d+)/) === null ) { // Don't prevent function keys
+    event.preventDefault(); // Prevent search bar even if we made a typo that isn't one of the used keys
+  } 
+
   if (k === " " || k === "enter"){
     if (game_state.running){
       if (game_state.input === "") return;
