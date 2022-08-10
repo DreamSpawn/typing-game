@@ -69,15 +69,17 @@ class Logic {
     return hit;
   }
   
-  static spawn_word() {
-    var new_word;
-    if (Settings.random_speed){
-      new_word = Word.fromList(Math.random() * 0.01 + 0.01);
-    } else {
-      new_word = Word.fromList(0.01);
+  static spawn_word(count) {
+    count = count ?? 1; // Default count 1
+    var pos = Math.random() * 100; // Position between 0-100
+    for (var i = 0; i < count; i++) {
+      var extra_speed = Settings.random_speed ? Math.random() * 0.01 : 0.0; 
+      pos = (pos + i * 100/count) % 100; // Spread out simultaneously spawned words evenly
+
+      var new_word = Word.fromList(0.01 + extra_speed, pos); // Generate word
+      game_state.words.push(new_word); // Add word to active words
+      graphics.prepare_word(new_word); // Do some calculations needed for drawing the word on screen
     }
-    game_state.words.push(new_word);
-    graphics.spawn_word();
   }
   
   static word_crash() {
@@ -108,8 +110,9 @@ class Logic {
     word.calc_score();
     if (game_state.words.length === 0){
       // Spawn 2 new words and reset delay
-      Logic.spawn_word();
-      game_state.current_delay = 0;
+      Logic.spawn_word(2);
+      game_state.current_delay += game_state.word_delay;
+      //game_state.current_delay = 0;
 
       word.score *= 2; // Bonus score for clearing screen
       game_state.escalate_delay = 0; // Speed up word spawn rate when screen is cleared

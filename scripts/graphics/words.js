@@ -30,12 +30,7 @@ Graphics.prototype.crash = function (word) {
 //----------------------------------------------------------------------------------
 // Calculating and saving word horizontal position
 //----------------------------------------------------------------------------------
-Graphics.prototype.spawn_word = function () {
-  var word = game_state.words[game_state.words.length - 1];
-  this.word_calc_horizontal(word);
-}
-
-Graphics.prototype.word_calc_horizontal = function (word) {
+Graphics.prototype.prepare_word = function (word) {
   word.width = this.main_ctx.measureText(word.text).width+this.font_padding_w*2;
   word.width_legs = word.width + 2 * this.img_legs.width;
   word.left = (this.main.width-word.width - this.img_legs.width*2 -2)/100*word.pos + this.img_legs.width + 1;

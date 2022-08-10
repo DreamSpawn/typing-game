@@ -175,7 +175,7 @@ class Graphics {
     this.gun_stand_height = this.img_gunstand.height * this.scale_h;
 
     game_state.words.forEach(word => {
-      graphics.word_calc_horizontal(word);
+      graphics.prepare_word(word);
     });
     
     this.draw_background();

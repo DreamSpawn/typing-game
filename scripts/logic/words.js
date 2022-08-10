@@ -76,13 +76,14 @@ class Word {
   //-----------------------------------------------------------------------------
   // Creating a random word from the previously loaded list
   //-----------------------------------------------------------------------------
-  static fromList(speed) {
+  static fromList(speed, pos) {
     if (!WordList.current) return null;
 
     var list = WordList.current;
     var index = Math.floor(Math.random() * list.length);
 
-    return new Word(list[index], Math.random() * 100, speed);
+    pos = pos ?? Math.random() * 100;
+    return new Word(list[index], pos, speed);
   }
 }
 
