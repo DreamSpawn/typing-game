@@ -21,6 +21,7 @@ class Settings{
     Settings.difficulty_level = parseInt(localStorage.difficulty_level);
     Settings.crash_clear = 50; // How much (in percent) of the screen is cleared when a word crash
     Settings.base_speed = 7;
+    Settings.escalate_time = 5000; // this could possibly be a setting
     
     // Music settings
     Settings.music_menu_enabled = localStorage.music_menu_enabled === "false" ? false : true ;
@@ -84,7 +85,6 @@ class Settings{
     WordList.update_list();
 
     Settings.word_delay = 6000 / Settings.spawn_rate;
-    Settings.escalate_time = 15000; // this could possibly be a setting
   }
 
   //-----------------------------------------------------------------------------
@@ -188,14 +188,14 @@ class Difficulty {
 }
 
 Difficulty.level = [
-  new Difficulty(0,1,4,5,false,false),
-  new Difficulty(3,1,6,3,true,true),
-  new Difficulty(8,1,4,3,true,true),
-  new Difficulty(4,3,4,3,true,true),
-  new Difficulty(6,4,4,3,true,true),
-  new Difficulty(7,5,4,3,true,true),
-  new Difficulty(8,5,4,3,true,true),
-  new Difficulty(8,6,4,3,true,true),
-  new Difficulty(8,7,4,3,true,true),
-  new Difficulty(8,7,6,1,true,true),
+  new Difficulty(0,1,3,5,false,false),
+  new Difficulty(3,1,5,3,true,true),
+  new Difficulty(8,1,3,3,true,true),
+  new Difficulty(4,3,3,3,true,true),
+  new Difficulty(6,4,3,3,true,true),
+  new Difficulty(7,5,3,3,true,true),
+  new Difficulty(8,5,3,3,true,true),
+  new Difficulty(8,6,3,3,true,true),
+  new Difficulty(8,7,3,3,true,true),
+  new Difficulty(8,7,5,1,true,true),
 ]

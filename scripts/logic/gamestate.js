@@ -29,8 +29,8 @@ class GameState {
     this.screen_clears = 0;
 
     this.current_delay = 500; // give players ½ a second before the first word
-    this.word_delay = Settings.word_delay;
     this.escalate_delay = Settings.escalate_time;
+    this.base_speed = Settings.base_speed;
 
     this.bonus_reset();
   }
@@ -47,12 +47,12 @@ class GameState {
       }
     }
     let speed_factor = (this.bonus_multi - 1)/(GameState.bonus_max - 1)
-    this.base_speed = Settings.base_speed * (1 + speed_factor);
+    this.word_delay = Settings.word_delay / (1 + speed_factor);
   }
 
   bonus_reset() {
     this.bonus_multi = 1;
     this.bonus_pip = 0;
-    this.base_speed = Settings.base_speed;
+    this.word_delay = Settings.word_delay;    
   }
 }

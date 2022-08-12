@@ -30,11 +30,11 @@ class Logic {
     if(!Settings.escalate) return;
     
     if (crash) {
-      // Reduce spawn rate a bit when a word crashes
+      // Reduce speed a bit when a word crashes
       game_state.escalate_delay = Settings.escalate_time;
-      game_state.word_delay *= 1.10;
-      if (game_state.word_delay > Settings.word_delay) {
-        game_state.word_delay = Settings.word_delay
+      game_state.base_speed *= 0.90;
+      if (game_state.base_speed < Settings.base_speed) {
+        game_state.base_speed = Settings.base_speed;
       }
       return;
     }
@@ -42,7 +42,10 @@ class Logic {
     game_state.escalate_delay -= elapsed;
     if(game_state.escalate_delay < 0){
       game_state.escalate_delay = Settings.escalate_time;
-      game_state.word_delay *= 0.95;
+      game_state.base_speed *= 1.05;
+      if (game_state.base_speed > Settings.base_speed * 2) {
+        game_state.base_speed = Settings.base_speed * 2;
+      }
     }
   }
   
@@ -77,11 +80,11 @@ class Logic {
       game_state.typos++
       game_state.bonus_reset();
       if(Settings.escalate) {
-        // Reduce spawn rate a bit when we make a mistake
+        // Reduce word speed a bit when we make a mistake
         game_state.escalate_delay = Settings.escalate_time;
-        game_state.word_delay *= 1.05;
-        if (game_state.word_delay > Settings.word_delay) {
-          game_state.word_delay = Settings.word_delay
+        game_state.base_speed *= 0.95;
+        if (game_state.base_speed < Settings.base_speed) {
+          game_state.base_speed = Settings.base_speed;
         }
       }
     }
@@ -136,7 +139,7 @@ class Logic {
       //game_state.current_delay = 0;
 
       word.score *= 2; // Bonus score for clearing screen
-      game_state.escalate_delay = 0; // Speed up word spawn rate when screen is cleared
+      game_state.escalate_delay = 0; // increase word speed when screen is cleared
       game_state.screen_clears++;
     }
     game_state.score += word.score;
