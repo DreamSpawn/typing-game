@@ -301,6 +301,8 @@ class Graphics {
       }
     }
 
+    this.draw_bonus(50,70)
+
     //draw the menu on top of everything if the game isn't running
     if(!game_state.running){
       document.body.style.cursor = "auto";
@@ -308,12 +310,71 @@ class Graphics {
     } else {
       document.body.style.cursor = "none";
     }
+  }
 
-    // Bonus
-    if (game_state.running) {
-      this.word_box(game_state.bonus_multi, this.hp_margin_x, 10, 40, "blue", this.ui_ctx);
-      this.word_box(game_state.bonus_pip, this.hp_margin_x, 80, 40, "yellow", this.ui_ctx);
+  draw_bonus(x,y) {
+    let radius = 25;
+    let text = "x" + game_state.bonus_multi;
+    let pips = game_state.bonus_pip;
+    let hue;
+    let sat = 100;
+    switch (game_state.bonus_multi) {
+      case 1:
+        hue = 0;
+        sat = 0;
+        break;
+      case 2:
+        hue = 40;
+        break;
+      case 4:
+        hue = 120;
+        break;
+      case 6:
+        hue = 230;
+        break;
+      case 8:
+        hue = 270;
+        break;
     }
+    
+    // pips
+    this.ui_ctx.lineWidth = "4";
+    this.ui_ctx.strokeStyle="#222222";
+    this.ui_ctx.fillStyle=`hsl(${hue},${sat}%,50%)`;
+
+    let draw_pie = function(x,y,i,ctx) {
+      let angle = Math.PI/(2*GameState.bonus_steps);
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.arc(x,y,radius*2,-Math.PI/4*3+angle*i,-Math.PI/4*3+angle*(i+1));
+      ctx.lineTo(x,y);
+      ctx.stroke();
+      ctx.fill();
+    };
+
+    for (let i = 0; i < pips; i++) {
+      draw_pie(x,y,i,this.ui_ctx);
+    }
+
+    this.ui_ctx.fillStyle=`hsl(${hue},${sat}%,20%)`;
+    for (let i = pips; i < GameState.bonus_steps; i++) {
+      draw_pie(x,y,i,this.ui_ctx);
+    }
+
+    // circle
+    this.ui_ctx.fillStyle=`hsl(${hue},${sat}%,50%)`;
+    this.ui_ctx.beginPath();
+    this.ui_ctx.arc(x,y,radius,0,2*Math.PI);
+    this.ui_ctx.stroke();
+    this.ui_ctx.fill();
+    
+    // text
+    this.ui_ctx.lineWidth = "1";
+    this.ui_ctx.font = "bold 36px Courier";
+    this.ui_ctx.fillStyle="white";
+    let text_witdh = this.ui_ctx.measureText(text).width;
+    this.ui_ctx.fillText(text, x-text_witdh/2,y-18+2);
+    this.ui_ctx.strokeText(text, x-text_witdh/2,y-18+2);
   }
   //----------------------------------------------------------------------------------
   // loading main images

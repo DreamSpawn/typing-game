@@ -7,6 +7,7 @@ class GameState {
     this.active = false;
     this.lost = false;
     this.words = [];
+    this.bonus_reset();
   }
 
   restart(){
