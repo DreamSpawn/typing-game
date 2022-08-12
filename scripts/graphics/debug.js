@@ -32,6 +32,7 @@ class Debug {
     Debug.println("Debug");
     Debug.println("Escalate time: " + game_state.escalate_delay);
     Debug.println("Word delay: " + game_state.word_delay);
+    Debug.println("Word speed: " + game_state.base_speed);
 
 
     // if (menu.current.sub_text) {

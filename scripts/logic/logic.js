@@ -28,6 +28,17 @@ class Logic {
     if (crash) Logic.word_crash();
 
     if(!Settings.escalate) return;
+    
+    if (crash) {
+      // Reduce spawn rate a bit when a word crashes
+      game_state.escalate_delay = Settings.escalate_time;
+      game_state.word_delay *= 1.10;
+      if (game_state.word_delay > Settings.word_delay) {
+        game_state.word_delay = Settings.word_delay
+      }
+      return;
+    }
+    
     game_state.escalate_delay -= elapsed;
     if(game_state.escalate_delay < 0){
       game_state.escalate_delay = Settings.escalate_time;
@@ -65,6 +76,14 @@ class Logic {
       game_state.score -= this.penalty;
       game_state.typos++
       game_state.bonus_reset();
+      if(Settings.escalate) {
+        // Reduce spawn rate a bit when we make a mistake
+        game_state.escalate_delay = Settings.escalate_time;
+        game_state.word_delay *= 1.05;
+        if (game_state.word_delay > Settings.word_delay) {
+          game_state.word_delay = Settings.word_delay
+        }
+      }
     }
   
     return hit;
@@ -73,11 +92,12 @@ class Logic {
   static spawn_word(count) {
     count = count ?? 1; // Default count 1
     var pos = Math.random() * 100; // Position between 0-100
+    var speed = game_state.base_speed;
     for (var i = 0; i < count; i++) {
-      var extra_speed = Settings.random_speed ? Math.random() * 0.01 : 0.0; 
+      var extra_speed = Settings.random_speed ? Math.random() * speed : 0; 
       pos = (pos + i * 100/count) % 100; // Spread out simultaneously spawned words evenly
 
-      var new_word = Word.fromList(0.01 + extra_speed, pos); // Generate word
+      var new_word = Word.fromList(speed + extra_speed, pos); // Generate word
       game_state.words.push(new_word); // Add word to active words
       graphics.prepare_word(new_word); // Do some calculations needed for drawing the word on screen
     }
@@ -85,7 +105,7 @@ class Logic {
   
   static word_crash() {
     for (var i = 0; i < game_state.words.length;) {
-      if (game_state.words[i].dist < Settings.crash_clear) {
+      if (game_state.words[i].dist_p() < Settings.crash_clear) {
         let word = game_state.words.splice(i, 1)[0];
         graphics.crash(word);
       } else {

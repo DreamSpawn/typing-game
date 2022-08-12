@@ -14,7 +14,7 @@ Graphics.prototype.shoot = function (word) {
   this.scored_words.push(word);
   word.time = Date.now();
 
-  word.y = this.word_bottom_y / 100 * (100 - word.dist) + 1 + this.font_size / 2;
+  word.y = this.word_bottom_y / 100 * (100 - word.dist_p()) + 1 + this.font_size / 2;
   word.score_width = this.main_ctx.measureText("" + word.score).width;
   this.gun_angle = Math.atan2(this.gun_y - word.y, this.gun_x - word.x) - Math.PI / 2;
 }
@@ -25,7 +25,7 @@ Graphics.prototype.crash = function (word) {
   this.crashed_words.push(word);
 
   word.time = Date.now();
-  word.y = this.word_bottom_y / 100 * (100 - word.dist) + 1 + this.font_size / 2;
+  word.y = this.word_bottom_y / 100 * (100 - word.dist_p()) + 1 + this.font_size / 2;
 }
 //----------------------------------------------------------------------------------
 // Calculating and saving word horizontal position
@@ -67,17 +67,17 @@ Graphics.prototype.draw_words = function(){
 }
 
 Graphics.prototype.draw_single_word = function(word){
-  var top = this.word_bottom_y/100*(100-word.dist) + 1 - this.font_padding_h;
+  var top = this.word_bottom_y/100*(100-word.dist_p()) + 1 - this.font_padding_h;
   var center_y = top + this.word_height/2;
   var bottom = top + this.word_height;
   
   this.main_ctx.lineWidth = "2";
   var border = parseInt(this.main_ctx.lineWidth);
 
-  var img_mouth = this.img_mouth[Math.floor((word.dist * 0.5) % 2)];
+  var img_mouth = this.img_mouth[Math.floor((word.dist_p() * 0.5) % 2)];
   this.main_ctx.drawImage(img_mouth, word.x-img_mouth.width/2, bottom + border, img_mouth.width, img_mouth.height);
 
-  if ((word.dist * 0.5) % 2 >= 1){
+  if ((word.dist_p() * 0.5) % 2 >= 1){
     this.main_ctx.translate(0, center_y+this.img_legs.height/2);
     this.main_ctx.transform(1, 0, 0, -1, 0, 0);
   } else {

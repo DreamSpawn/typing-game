@@ -46,10 +46,13 @@ class GameState {
         this.bonus_pip = 0;
       }
     }
+    let speed_factor = (this.bonus_multi - 1)/(GameState.bonus_max - 1)
+    this.base_speed = Settings.base_speed * (1 + speed_factor);
   }
 
   bonus_reset() {
     this.bonus_multi = 1;
     this.bonus_pip = 0;
+    this.base_speed = Settings.base_speed;
   }
 }

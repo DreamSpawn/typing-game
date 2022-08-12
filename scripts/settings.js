@@ -19,7 +19,8 @@ class Settings{
     Settings.escalate = localStorage.escalate === "false" ? false : true;
     Settings.random_speed = localStorage.random_speed === "false" ? false : true;
     Settings.difficulty_level = parseInt(localStorage.difficulty_level);
-    Settings.crash_clear = 50; // How much of the screen is cleared when a word crash
+    Settings.crash_clear = 50; // How much (in percent) of the screen is cleared when a word crash
+    Settings.base_speed = 7;
     
     // Music settings
     Settings.music_menu_enabled = localStorage.music_menu_enabled === "false" ? false : true ;
